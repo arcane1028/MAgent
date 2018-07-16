@@ -26,7 +26,7 @@ namespace gridworld {
         name = bool(int(values[i] + 0.5));\
         is_set = true;\
     }
-
+//TODO 
 AgentType::AgentType(int n, std::string name, const char **keys, float *values, bool turn_mode) {
     this->name = name;
 
