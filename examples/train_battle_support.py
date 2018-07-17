@@ -1,5 +1,5 @@
 """
-Train battle, two models in two processes
+Train battle_support, one side with support agent and other is not.
 """
 
 import argparse
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     parser.add_argument("--train", action="store_true")
     parser.add_argument("--map_size", type=int, default=125)
     parser.add_argument("--greedy", action="store_true")
-    parser.add_argument("--name", type=str, default="battle")
+    parser.add_argument("--name", type=str, default="battle_support")
     parser.add_argument("--eval", action="store_true")
     parser.add_argument('--alg', default='dqn', choices=['dqn', 'drqn', 'a2c'])
     args = parser.parse_args()
@@ -151,7 +151,7 @@ if __name__ == "__main__":
     magent.utility.init_logger(args.name)
 
     # init the game
-    env = magent.GridWorld("battle", map_size=args.map_size)
+    env = magent.GridWorld("battle_support", map_size=args.map_size)
     env.set_render_dir("build/render")
 
     # two groups of agents
