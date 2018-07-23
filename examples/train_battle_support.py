@@ -23,7 +23,7 @@ def generate_map(env, map_size, handles):
     global leftID, rightID
     leftID, rightID = rightID, leftID
 
-    # left
+    # left 1
     n = init_num
     side = int(math.sqrt(n)) * 2
     pos = []
@@ -32,14 +32,22 @@ def generate_map(env, map_size, handles):
             pos.append([x, y, 0])
     env.add_agents(handles[leftID], method="custom", pos=pos)
 
-    # right
+    # right 0
     n = init_num
     side = int(math.sqrt(n)) * 2
     pos = []
+    #medic 2
+    pos_m = []
     for x in range(width//2 + gap, width//2 + gap + side, 2):
         for y in range((height - side)//2, (height - side)//2 + side, 2):
-            pos.append([x, y, 0])
+            if y == (height - side)//2 + side:
+                pos_m.append([x, y, 0])
+            else:
+                pos.append([x, y, 0])
     env.add_agents(handles[rightID], method="custom", pos=pos)
+
+    env.add_agents(handles[2], method="custom", pos=pos)
+
 
 
 def play_a_round(env, map_size, handles, models, print_every, train=True, render=False, eps=None):
@@ -136,11 +144,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--save_every", type=int, default=5)
     parser.add_argument("--render_every", type=int, default=10)
-    parser.add_argument("--n_round", type=int, default=2000)
+    parser.add_argument("--n_round", type=int, default=1000)
     parser.add_argument("--render", action="store_true")
     parser.add_argument("--load_from", type=int)
     parser.add_argument("--train", action="store_true")
-    parser.add_argument("--map_size", type=int, default=125)
+    parser.add_argument("--map_size", type=int, default=50)
     parser.add_argument("--greedy", action="store_true")
     parser.add_argument("--name", type=str, default="battle_support")
     parser.add_argument("--eval", action="store_true")
@@ -158,7 +166,7 @@ if __name__ == "__main__":
     handles = env.get_handles()
 
     # sample eval observation set
-    eval_obs = [None, None]
+    eval_obs = [None, None, None]
     if args.eval:
         print("sample eval set...")
         env.reset()
@@ -189,13 +197,13 @@ if __name__ == "__main__":
         raise NotImplementedError
 
     # init models
-    names = [args.name + "-l", args.name + "-r"]
+    names = [args.name + "-l", args.name + "-r", args.name + "-m"]
     models = []
-
+    # port error 20000 -> 30000
     for i in range(len(names)):
         model_args = {'eval_obs': eval_obs[i]}
         model_args.update(base_args)
-        models.append(magent.ProcessingModel(env, handles[i], names[i], 20000+i, 1000, RLModel, **model_args))
+        models.append(magent.ProcessingModel(env, handles[i], names[i], 30000+i, 1000, RLModel, **model_args))
 
     # load if
     savedir = 'save_model'
