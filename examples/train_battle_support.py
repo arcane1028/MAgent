@@ -40,13 +40,13 @@ def generate_map(env, map_size, handles):
     pos_m = []
     for x in range(width//2 + gap, width//2 + gap + side, 2):
         for y in range((height - side)//2, (height - side)//2 + side, 2):
-            if y == (height - side)//2 + side:
+            if y == (height - side)//2 + side-2:
                 pos_m.append([x, y, 0])
             else:
                 pos.append([x, y, 0])
     env.add_agents(handles[rightID], method="custom", pos=pos)
-
-    env.add_agents(handles[2], method="custom", pos=pos)
+    # medic 2
+    env.add_agents(handles[2], method="custom", pos=pos_m)
 
 
 
