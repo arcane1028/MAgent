@@ -23,9 +23,9 @@ def get_config(map_size):
         "medic",
         {'width': 1, 'length': 1, 'hp': 10, 'speed': 2,
          'view_range': gw.CircleRange(6), 'attack_range': gw.CircleRange(1.5),
-         'damage': 0, 'step_recover': 0.0,
+         'damage': -5, 'step_recover': 0.0,
 
-         'step_reward': -0.005, 'dead_penalty': -0.1,
+         'step_reward': -0.005, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
          })
 
     g0 = cfg.add_group(marine)
