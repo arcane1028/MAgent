@@ -23,7 +23,7 @@ def get_config(map_size):
         "medic",
         {'width': 1, 'length': 1, 'hp': 10, 'speed': 2,
          'view_range': gw.CircleRange(6), 'attack_range': gw.CircleRange(1.5),
-         'damage': -5, 'step_recover': 0.0,
+         'damage': -2, 'step_recover': 0.0,
 
          'step_reward': -0.005, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
          })
@@ -38,7 +38,8 @@ def get_config(map_size):
 
     # reward shaping to encourage attack
     cfg.add_reward_rule(gw.Event(a, 'attack', b), receiver=a, value=0.2)
+    cfg.add_reward_rule(gw.Event(a, 'attack', c), receiver=a, value=0.3)
     cfg.add_reward_rule(gw.Event(b, 'attack', a), receiver=b, value=0.2)
-    cfg.add_reward_rule(gw.Event(c, 'attack', b), receiver=c, value=0.2)
+    cfg.add_reward_rule(gw.Event(c, 'attack', b), receiver=c, value=0.3)
 
     return cfg
