@@ -167,7 +167,7 @@ if __name__ == "__main__":
     env = magent.GridWorld("battle_support", map_size=args.map_size)
     env.set_render_dir("build/render")
 
-    # two groups of agents
+    # three groups of agents
     handles = env.get_handles()
 
     # sample eval observation set

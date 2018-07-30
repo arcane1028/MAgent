@@ -17,7 +17,7 @@ def get_config(map_size):
          'view_range': gw.CircleRange(6), 'attack_range': gw.CircleRange(1.5),
          'damage': 2, 'step_recover': 0.0,
 
-         'step_reward': -0.005,  'kill_reward': 5, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
+         'step_reward': -0.01,  'kill_reward': 0, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
          })
     medic = cfg.register_agent_type(
         "medic",
@@ -25,7 +25,7 @@ def get_config(map_size):
          'view_range': gw.CircleRange(6), 'attack_range': gw.CircleRange(1.5),
          'damage': -2, 'step_recover': 0.0,
 
-         'step_reward': -0.005, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
+         'step_reward': -0.01, 'dead_penalty': -10, 'attack_penalty': -0.1,
          })
 
     g0 = cfg.add_group(marine)
@@ -37,9 +37,22 @@ def get_config(map_size):
     c = gw.AgentSymbol(g2, index='any')
 
     # reward shaping to encourage attack
-    cfg.add_reward_rule(gw.Event(a, 'attack', b), receiver=a, value=0.2)
-    cfg.add_reward_rule(gw.Event(a, 'attack', c), receiver=a, value=0.3)
-    cfg.add_reward_rule(gw.Event(b, 'attack', a), receiver=b, value=0.2)
-    cfg.add_reward_rule(gw.Event(c, 'attack', b), receiver=c, value=0.3)
+    # a rule
+    cfg.add_reward_rule(gw.Event(a, 'attack', b), receiver=a, value=2)
+    cfg.add_reward_rule(gw.Event(a, 'attack', c), receiver=a, value=3)
+
+    cfg.add_reward_rule(gw.Event(a, 'kill', b), receiver=a, value=100)
+    cfg.add_reward_rule(gw.Event(a, 'kill', c), receiver=a, value=200)
+
+    # b rule
+    cfg.add_reward_rule(gw.Event(b, 'attack', a), receiver=b, value=2)
+    cfg.add_reward_rule(gw.Event(b, 'attack', c), receiver=b, value=-2)
+
+    cfg.add_reward_rule(gw.Event(b, 'kill', a), receiver=b, value=100)
+    cfg.add_reward_rule(gw.Event(b, 'kill', c), receiver=b, value=-100)
+
+    # c rule
+    cfg.add_reward_rule(gw.Event(c, 'attack', a), receiver=c, value=-3)
+    cfg.add_reward_rule(gw.Event(c, 'attack', b), receiver=c, value=3)
 
     return cfg
