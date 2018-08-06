@@ -95,7 +95,7 @@ private:
     bool minimap_mode;   // default = False
     bool goal_mode;      // default = False
     bool large_map_mode; // default = False
-    bool mean_mode;      
+    bool mean_mode;
     int embedding_size;  // default = 0
 
     // game states : map, agent and group
@@ -200,12 +200,28 @@ public:
         return dead;
     }
 
-    void be_attack(float damage) {
-        hp -= damage;
-        if (hp < 0.0) {
-            dead = true;
-            next_reward = type.dead_penalty;
+    Reward be_attack(float damage) {
+
+        int SECTION_NUM = 4;
+
+        if (damage < 0) {
+
+            int section = (int) floorf(hp / (type.hp / SECTION_NUM));
+
+            //hp = std::min(type.hp, hp - damage);
+            add_hp(-damage);
+
+            return damage * (SECTION_NUM - section);
+
+        } else {
+            hp -= damage;
+            if (hp < 0.0) {
+                dead = true;
+                next_reward = type.dead_penalty;
+            }
         }
+
+        return 0.0;
     }
 
     GroupHandle get_group() const { return group; }

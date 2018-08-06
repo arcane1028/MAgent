@@ -46,6 +46,8 @@ public:
 
     int move_base, turn_base, attack_base;
     std::vector<int> action_space;
+
+    int ally_with;
 };
 
 

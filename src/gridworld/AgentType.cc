@@ -47,6 +47,8 @@ AgentType::AgentType(int n, std::string name, const char **keys, float *values, 
     step_reward = kill_reward  = dead_penalty = attack_penalty = 0.0;
     can_absorb = false;
 
+    ally_with= -1;
+
     // init member vars from str (reflection)
     bool is_set;
     for (int i = 0; i < n; i++) {
@@ -76,6 +78,8 @@ AgentType::AgentType(int n, std::string name, const char **keys, float *values, 
         AGENT_TYPE_SET_FLOAT(view_x_offset); AGENT_TYPE_SET_FLOAT(view_y_offset);
         AGENT_TYPE_SET_FLOAT(att_x_offset);  AGENT_TYPE_SET_FLOAT(att_y_offset);
         AGENT_TYPE_SET_FLOAT(turn_x_offset); AGENT_TYPE_SET_FLOAT(turn_y_offset);
+
+        AGENT_TYPE_SET_INT(ally_with);
 
         if (!is_set) {
             LOG(FATAL) << "invalid agent config in AgentType::AgentType : " << keys[i];
