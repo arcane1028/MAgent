@@ -240,9 +240,9 @@ PositionInteger Map::get_attack_obj(const AttackAction &attack, int &obj_x, int 
                 }
                 return pos_int;
             } else {
-                bool test_condition = (agent->get_group() == 1 && obj->get_group() == 2) ||
-                                      (agent->get_group() == 2 && obj->get_group() == 1);
-                if (test_condition) {
+                //bool test_condition = (agent->get_group() == 1 && obj->get_group() == 2) ||
+                //                      (agent->get_group() == 2 && obj->get_group() == 1);
+                if (agent->get_type().ally_with == obj->get_group()) {
                     if (agent->get_type().damage < 0) {
                         return pos_int;
                     }
@@ -295,7 +295,7 @@ Reward Map::do_attack(Agent *agent, PositionInteger pos_int, GroupHandle &dead_g
             } else {
                 agent->set_last_op(OP_ATTACK);
                 agent->set_op_obj(obj);
-                return 0.0;
+                return reward;
             }
             break;
         }
