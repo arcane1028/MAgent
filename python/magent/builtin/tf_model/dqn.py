@@ -186,7 +186,7 @@ class DeepQNetwork(TFBaseModel):
             advantage = tf.layers.dense(dense, units=self.num_actions, use_bias=False,
                                         name="advantage", reuse=reuse)
 
-            qvalues = value + advantage - tf.reduce_mean(advantage, axis=1, keep_dims=True)
+            qvalues = value + advantage - tf.reduce_mean(advantage, axis=1, keepdims=True)
         else:
             qvalues = tf.layers.dense(dense, units=self.num_actions, name="value", reuse=reuse)
 

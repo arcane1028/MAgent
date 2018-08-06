@@ -31,9 +31,9 @@ def generate_map(env, map_size, handles):
     n = init_num
     side = int(math.sqrt(n)) * 2
     pos = []
-    for x in range(width//2 - gap - side, width//2 - gap - side + side, 2):
-        for y in range((height - side)//2, (height - side)//2 + side, 2):
-            if y >= (height - side)//2 + side-2*number_of_line and leftID == 1:
+    for x in range(width // 2 - gap - side, width // 2 - gap - side + side, 2):
+        for y in range((height - side) // 2, (height - side) // 2 + side, 2):
+            if y >= (height - side) // 2 + side - 2 * number_of_line and leftID == 1:
                 pos_m.append([x, y, 0])
             else:
                 pos.append([x, y, 0])
@@ -225,6 +225,7 @@ if __name__ == "__main__":
     print("view_space", env.get_view_space(handles[0]))
     print("feature_space", env.get_feature_space(handles[0]))
 
+    a_win, draw, b_win = 0, 0, 0
     # play
     start = time.time()
     for k in range(start_from, start_from + args.n_round):
@@ -237,6 +238,15 @@ if __name__ == "__main__":
 
         log.info("round %d\t loss: %s\t num: %s\t reward: %s\t value: %s" % (k, loss, num, reward, value))
         print("round time %.2f  total time %.2f\n" % (time.time() - tic, time.time() - start))
+
+        if num[0] > num[1] + num[2]:
+            a_win += 1
+        elif num[0] == num[1] + num[2]:
+            draw += 1
+        else:
+            b_win += 1
+
+        log.info("round %d\t A_win: %d\t draw: %d\t B_win: %d" % (k, a_win, draw, b_win))
 
         # save models
         if (k + 1) % args.save_every == 0 and args.train:
