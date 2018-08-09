@@ -8,6 +8,7 @@ import logging as log
 import math
 
 import numpy as np
+import pandas as pd
 
 import magent
 
@@ -226,8 +227,11 @@ if __name__ == "__main__":
     print("feature_space", env.get_feature_space(handles[0]))
 
     a_win, draw, b_win = 0, 0, 0
+    headers = ["round", "loss", "num", "reward", "value", "round time", "total time", "A win", "draw", "B win"]
+    result_log = pd.DataFrame(columns=headers)
     # play
     start = time.time()
+
     for k in range(start_from, start_from + args.n_round):
         tic = time.time()
         eps = magent.utility.piecewise_decay(k, [0, 700, 1400], [1, 0.2, 0.05]) if not args.greedy else 0
@@ -235,10 +239,6 @@ if __name__ == "__main__":
                                                 train=args.train, print_every=50,
                                                 render=args.render or (k+1) % args.render_every == 0,
                                                 eps=eps)  # for e-greedy
-
-        log.info("round %d\t loss: %s\t num: %s\t reward: %s\t value: %s" % (k, loss, num, reward, value))
-        print("round time %.2f  total time %.2f\n" % (time.time() - tic, time.time() - start))
-
         if num[0] > num[1] + num[2]:
             a_win += 1
         elif num[0] == num[1] + num[2]:
@@ -246,13 +246,26 @@ if __name__ == "__main__":
         else:
             b_win += 1
 
-        log.info("round %d\t A_win: %d\t draw: %d\t B_win: %d" % (k, a_win, draw, b_win))
+        result_round = pd.Series(
+            [k, loss, num, reward, value, time.time() - tic, time.time() - start, a_win, draw, b_win],
+            index=headers)
+
+        log.info(result_round)
+
+        result_log = result_log.append(result_round, ignore_index=True)
+
+        # log.info("round %d\t loss: %s\t num: %s\t reward: %s\t value: %s" % (k, loss, num, reward, value))
+        # print("round time %.2f  total time %.2f\n" % (time.time() - tic, time.time() - start))
+        # log.info("round %d\t A_win: %d\t draw: %d\t B_win: %d" % (k, a_win, draw, b_win))
 
         # save models
         if (k + 1) % args.save_every == 0 and args.train:
             print("save model... ")
             for model in models:
                 model.save(savedir, k)
+
+    filename = args.name+".csv"
+    result_log.to_csv(filename, encoding='utf-8', index=False)
 
     # send quit command
     for model in models:
