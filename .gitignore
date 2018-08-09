@@ -9,6 +9,7 @@ data
 *.pyc
 *.log
 *.csv
+*.out
 __pycache__
 save_video
 save_model

@@ -14,6 +14,7 @@ import magent
 
 leftID, rightID = 0, 1
 
+pd.set_option('display.max_columns', None)
 
 def generate_map(env, map_size, handles):
     """ generate a map, which consists of two squares of agents"""
@@ -227,7 +228,7 @@ if __name__ == "__main__":
     print("feature_space", env.get_feature_space(handles[0]))
 
     a_win, draw, b_win = 0, 0, 0
-    headers = ["round", "loss", "num", "reward", "value", "round time", "total time", "A win", "draw", "B win"]
+    headers = ["round", "loss", "num", "reward", "value", "round_time", "total_time", "A_Win", "Draw", "B_Win"]
     result_log = pd.DataFrame(columns=headers)
     # play
     start = time.time()
@@ -250,12 +251,11 @@ if __name__ == "__main__":
             [k, loss, num, reward, value, time.time() - tic, time.time() - start, a_win, draw, b_win],
             index=headers)
 
-        log.info(result_round)
+        log.info("round %d\t loss: %s\t num: %s\t reward: %s\t value: %s" % (k, loss, num, reward, value))
+        print("round time %.2f  total time %.2f\n" % (result_round["round_time"], result_round["total_time"]))
 
         result_log = result_log.append(result_round, ignore_index=True)
 
-        # log.info("round %d\t loss: %s\t num: %s\t reward: %s\t value: %s" % (k, loss, num, reward, value))
-        # print("round time %.2f  total time %.2f\n" % (time.time() - tic, time.time() - start))
         # log.info("round %d\t A_win: %d\t draw: %d\t B_win: %d" % (k, a_win, draw, b_win))
 
         # save models
