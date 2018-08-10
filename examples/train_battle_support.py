@@ -6,6 +6,7 @@ import argparse
 import time
 import logging as log
 import math
+import os
 
 import numpy as np
 import pandas as pd
@@ -229,7 +230,8 @@ if __name__ == "__main__":
 
     a_win, draw, b_win = 0, 0, 0
     headers = ["round", "loss", "num", "reward", "value", "round_time", "total_time", "A_Win", "Draw", "B_Win"]
-    result_log = pd.DataFrame(columns=headers)
+    filename = args.name+".csv"
+
     # play
     start = time.time()
 
@@ -254,18 +256,16 @@ if __name__ == "__main__":
         log.info("round %d\t loss: %s\t num: %s\t reward: %s\t value: %s" % (k, loss, num, reward, value))
         print("round time %.2f  total time %.2f\n" % (result_round["round_time"], result_round["total_time"]))
 
-        result_log = result_log.append(result_round, ignore_index=True)
-
-        # log.info("round %d\t A_win: %d\t draw: %d\t B_win: %d" % (k, a_win, draw, b_win))
+        if not os.path.isfile(filename):
+            result_round.to_frame().T.to_csv(filename,  encoding='utf-8', index=False, header=headers)
+        else:  # else it exists so append without writing the header
+            result_round.to_frame().T.to_csv(filename, mode='a',  encoding='utf-8', index=False, header=False)
 
         # save models
         if (k + 1) % args.save_every == 0 and args.train:
             print("save model... ")
             for model in models:
                 model.save(savedir, k)
-
-    filename = args.name+".csv"
-    result_log.to_csv(filename, encoding='utf-8', index=False)
 
     # send quit command
     for model in models:
