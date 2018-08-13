@@ -28,12 +28,13 @@ def generate_map(env, map_size, handles):
 
     # medic 2
     pos_m = []
-    number_of_line = 1
+    number_of_line = 2
 
     # left
     n = init_num
     side = int(math.sqrt(n)) * 2
     pos = []
+
     for x in range(width // 2 - gap - side, width // 2 - gap - side + side, 2):
         for y in range((height - side) // 2, (height - side) // 2 + side, 2):
             if y >= (height - side) // 2 + side - 2 * number_of_line and leftID == 1:
@@ -49,7 +50,7 @@ def generate_map(env, map_size, handles):
 
     for x in range(width//2 + gap, width//2 + gap + side, 2):
         for y in range((height - side)//2, (height - side)//2 + side, 2):
-            if y == (height - side)//2 + side-2 and rightID == 1:
+            if y >= (height - side) // 2 + side - 2 * number_of_line and rightID == 1:
                 pos_m.append([x, y, 0])
             else:
                 pos.append([x, y, 0])
