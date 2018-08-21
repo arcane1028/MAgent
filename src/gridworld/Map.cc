@@ -242,7 +242,7 @@ PositionInteger Map::get_attack_obj(const AttackAction &attack, int &obj_x, int 
                 return pos_int;
             } else {
                 if ((agent->get_type().ally_with == obj->get_group()) == (agent->get_type().damage < 0)) {
-                    return pos_int;
+                    return pos_int;  //cure alliance or attack enemy
                 }
                 return -1;
             }
@@ -269,7 +269,7 @@ Reward Map::do_attack(Agent *agent, PositionInteger pos_int, GroupHandle &dead_g
         {
             Agent *obj = ((Agent *)slots[pos_int].occupier);
 
-            Reward reward = obj->be_attack(agent->get_type().damage);
+            Reward reward = obj->be_attack(agent->get_type().damage); // add reward
             if (obj->is_dead()) {
                 agent->set_last_op(OP_KILL);
                 agent->set_op_obj(obj);

@@ -205,10 +205,11 @@ public:
         int SECTION_NUM = 4;
 
         if (damage < 0) {
+            // cure function
             int section = (int) floorf(hp / (type.hp / SECTION_NUM));
 
             add_hp(-damage);
-
+            // less hp, more reward
             return damage * (SECTION_NUM - section);
 
         } else {
