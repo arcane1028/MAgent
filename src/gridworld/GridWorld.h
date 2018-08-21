@@ -205,10 +205,8 @@ public:
         int SECTION_NUM = 4;
 
         if (damage < 0) {
-
             int section = (int) floorf(hp / (type.hp / SECTION_NUM));
 
-            //hp = std::min(type.hp, hp - damage);
             add_hp(-damage);
 
             return damage * (SECTION_NUM - section);

@@ -1,16 +1,12 @@
 """Deep q network"""
 
 import time
-import os
 
 import numpy as np
 import tensorflow as tf
 
 from .base import TFBaseModel
 from ..common import ReplayBuffer
-
-#os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-#os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 
 class DeepQNetwork(TFBaseModel):

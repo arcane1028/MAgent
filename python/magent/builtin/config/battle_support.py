@@ -56,13 +56,9 @@ def get_config(map_size):
 
     # b rule
     cfg.add_reward_rule(gw.Event(b, 'attack', a), receiver=b, value=2)
-    cfg.add_reward_rule(gw.Event(b, 'attack', c), receiver=b, value=-2)
-
     cfg.add_reward_rule(gw.Event(b, 'kill', a), receiver=b, value=100)
-    cfg.add_reward_rule(gw.Event(b, 'kill', c), receiver=b, value=-100)
 
     # c rule
-    cfg.add_reward_rule(gw.Event(c, 'attack', a), receiver=c, value=-3)
     cfg.add_reward_rule(gw.Event(c, 'attack', b), receiver=c, value=3)
 
     return cfg
