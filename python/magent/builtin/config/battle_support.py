@@ -17,7 +17,7 @@ def get_config(map_size):
          'view_range': gw.CircleRange(6), 'attack_range': gw.CircleRange(1.5),
          'damage': 2, 'step_recover': 0.0,
 
-         'step_reward': -0.01,  'kill_reward': 0, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
+         'step_reward': -0.01,  'kill_reward': 5, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
          })
     marine2 = cfg.register_agent_type(
         "marine2",
@@ -26,7 +26,7 @@ def get_config(map_size):
          'damage': 2, 'step_recover': 0.0,
          'ally_with': 2,
 
-         'step_reward': -0.01,  'kill_reward': 0, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
+         'step_reward': -0.01,  'kill_reward': 5, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
          })
 
     medic = cfg.register_agent_type(
@@ -36,7 +36,7 @@ def get_config(map_size):
          'damage': -2, 'step_recover': 0.0,
          'ally_with': 1,
 
-         'step_reward': -0.01, 'dead_penalty': -10, 'attack_penalty': -0.1,
+         'step_reward': -0.01, 'kill_reward': 5, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
          })
 
     g0 = cfg.add_group(marine)
@@ -51,12 +51,12 @@ def get_config(map_size):
     cfg.add_reward_rule(gw.Event(a, 'attack', b), receiver=a, value=2)
     cfg.add_reward_rule(gw.Event(a, 'attack', c), receiver=a, value=3)
 
-    cfg.add_reward_rule(gw.Event(a, 'kill', b), receiver=a, value=100)
-    cfg.add_reward_rule(gw.Event(a, 'kill', c), receiver=a, value=200)
+    cfg.add_reward_rule(gw.Event(a, 'kill', b), receiver=a, value=10)
+    cfg.add_reward_rule(gw.Event(a, 'kill', c), receiver=a, value=20)
 
     # b rule
     cfg.add_reward_rule(gw.Event(b, 'attack', a), receiver=b, value=2)
-    cfg.add_reward_rule(gw.Event(b, 'kill', a), receiver=b, value=100)
+    cfg.add_reward_rule(gw.Event(b, 'kill', a), receiver=b, value=10)
 
     # c rule
     cfg.add_reward_rule(gw.Event(c, 'attack', b), receiver=c, value=3)

@@ -208,11 +208,11 @@ if __name__ == "__main__":
     # init models
     names = [args.name + "-l", args.name + "-r", args.name + "-m"]
     models = []
-    # port error 20000 -> 30000
+
     for i in range(len(names)):
         model_args = {'eval_obs': eval_obs[i]}
         model_args.update(base_args)
-        models.append(magent.ProcessingModel(env, handles[i], names[i], 30000+i, 1000, RLModel, **model_args))
+        models.append(magent.ProcessingModel(env, handles[i], names[i], 20000+i, 1000, RLModel, **model_args))
 
     # load if
     savedir = 'save_model'
@@ -235,7 +235,6 @@ if __name__ == "__main__":
 
     # play
     start = time.time()
-
     for k in range(start_from, start_from + args.n_round):
         tic = time.time()
         eps = magent.utility.piecewise_decay(k, [0, 700, 1400], [1, 0.2, 0.05]) if not args.greedy else 0

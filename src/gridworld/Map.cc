@@ -241,9 +241,7 @@ PositionInteger Map::get_attack_obj(const AttackAction &attack, int &obj_x, int 
                 }
                 return pos_int;
             } else {
-
-                if ((agent->get_type().ally_with == obj->get_group())
-                    != (agent->get_type().damage < 0)) {
+                if ((agent->get_type().ally_with == obj->get_group()) != (agent->get_type().damage < 0)) {
                     return pos_int;
                 }
                 return -1;
