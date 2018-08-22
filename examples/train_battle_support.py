@@ -17,6 +17,7 @@ leftID, rightID = 0, 1
 
 pd.set_option('display.max_columns', None)
 
+
 def generate_map(env, map_size, handles):
     """ generate a map, which consists of two squares of agents"""
     width = height = map_size
@@ -26,8 +27,10 @@ def generate_map(env, map_size, handles):
     global leftID, rightID
     leftID, rightID = rightID, leftID
 
-    # medic 2
+    # medic
+    medic_id = 2
     pos_m = []
+    # medic place in army below and how many medic line?
     number_of_line = 2
 
     # left
@@ -55,8 +58,8 @@ def generate_map(env, map_size, handles):
             else:
                 pos.append([x, y, 0])
     env.add_agents(handles[rightID], method="custom", pos=pos)
-    # medic 2
-    env.add_agents(handles[2], method="custom", pos=pos_m)
+
+    env.add_agents(handles[medic_id], method="custom", pos=pos_m)
 
 
 def play_a_round(env, map_size, handles, models, print_every, train=True, render=False, eps=None):

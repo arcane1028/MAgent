@@ -12,3 +12,5 @@
 
 - show_battle_game.py  a game based on battle agents
 - train_battle_game.py the training script for battle game
+
+- train_battle_support.py: this is base on train_battle.py and add medics to one side

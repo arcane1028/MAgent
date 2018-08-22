@@ -24,16 +24,21 @@ def get_config(map_size):
         {'width': 1, 'length': 1, 'hp': 10, 'speed': 2,
          'view_range': gw.CircleRange(6), 'attack_range': gw.CircleRange(1.5),
          'damage': 2, 'step_recover': 0.0,
+         # alliance's id, value of g2
          'ally_with': 2,
 
          'step_reward': -0.01,  'kill_reward': 5, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
          })
 
+    """
+    if the damage in lower then 0, the enemy's hp increases when attack
+    """
     medic = cfg.register_agent_type(
         "medic",
         {'width': 1, 'length': 1, 'hp': 10, 'speed': 2,
          'view_range': gw.CircleRange(6), 'attack_range': gw.CircleRange(1.5),
          'damage': -2, 'step_recover': 0.0,
+         # value of g1
          'ally_with': 1,
 
          'step_reward': -0.01, 'kill_reward': 5, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
