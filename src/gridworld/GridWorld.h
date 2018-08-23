@@ -209,7 +209,7 @@ public:
             int section = (int) floorf(hp / (type.hp / SECTION_NUM));
 
             add_hp(-damage);
-            // less hp, more reward
+            //cure less hp, more reward
             return damage * (SECTION_NUM - section);
 
         } else {
