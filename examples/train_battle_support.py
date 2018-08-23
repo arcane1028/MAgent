@@ -6,16 +6,12 @@ import argparse
 import time
 import logging as log
 import math
-import os
 
 import numpy as np
-import pandas as pd
 
 import magent
 
 leftID, rightID = 0, 1
-
-pd.set_option('display.max_columns', None)
 
 
 def generate_map(env, map_size, handles):
@@ -30,9 +26,10 @@ def generate_map(env, map_size, handles):
     # medic
     medic_id = 2
     pos_m = []
-    # medic place in army below and how many medic line?
+    # It means the number of lines of medic
     number_of_line = 2
 
+    # medic is located under the alliance agent
     # left
     n = init_num
     side = int(math.sqrt(n)) * 2
@@ -40,6 +37,7 @@ def generate_map(env, map_size, handles):
 
     for x in range(width // 2 - gap - side, width // 2 - gap - side + side, 2):
         for y in range((height - side) // 2, (height - side) // 2 + side, 2):
+            # in this example medic ally with group 1
             if y >= (height - side) // 2 + side - 2 * number_of_line and leftID == 1:
                 pos_m.append([x, y, 0])
             else:
@@ -154,9 +152,9 @@ def play_a_round(env, map_size, handles, models, print_every, train=True, render
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--save_every", type=int, default=100)
-    parser.add_argument("--render_every", type=int, default=100)
-    parser.add_argument("--n_round", type=int, default=5000)
+    parser.add_argument("--save_every", type=int, default=5)
+    parser.add_argument("--render_every", type=int, default=10)
+    parser.add_argument("--n_round", type=int, default=4000)
     parser.add_argument("--render", action="store_true")
     parser.add_argument("--load_from", type=int)
     parser.add_argument("--train", action="store_true")
@@ -232,10 +230,6 @@ if __name__ == "__main__":
     print("view_space", env.get_view_space(handles[0]))
     print("feature_space", env.get_feature_space(handles[0]))
 
-    a_win, draw, b_win = 0, 0, 0
-    headers = ["round", "loss", "num", "reward", "value", "round_time", "total_time", "A_Win", "Draw", "B_Win"]
-    filename = args.name+".csv"
-
     # play
     start = time.time()
     for k in range(start_from, start_from + args.n_round):
@@ -245,24 +239,9 @@ if __name__ == "__main__":
                                                 train=args.train, print_every=50,
                                                 render=args.render or (k+1) % args.render_every == 0,
                                                 eps=eps)  # for e-greedy
-        if num[0] > num[1] + num[2]:
-            a_win += 1
-        elif num[0] == num[1] + num[2]:
-            draw += 1
-        else:
-            b_win += 1
-
-        result_round = pd.Series(
-            [k, loss, num, reward, value, time.time() - tic, time.time() - start, a_win, draw, b_win],
-            index=headers)
 
         log.info("round %d\t loss: %s\t num: %s\t reward: %s\t value: %s" % (k, loss, num, reward, value))
-        print("round time %.2f  total time %.2f\n" % (result_round["round_time"], result_round["total_time"]))
-
-        if not os.path.isfile(filename):
-            result_round.to_frame().T.to_csv(filename,  encoding='utf-8', index=False, header=headers)
-        else:  # else it exists so append without writing the header
-            result_round.to_frame().T.to_csv(filename, mode='a',  encoding='utf-8', index=False, header=False)
+        print("round time %.2f  total time %.2f\n" % (time.time() - tic, time.time() - start))
 
         # save models
         if (k + 1) % args.save_every == 0 and args.train:
