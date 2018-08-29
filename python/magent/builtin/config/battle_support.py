@@ -30,9 +30,7 @@ def get_config(map_size):
          'step_reward': -0.01,  'kill_reward': 5, 'dead_penalty': -0.1, 'attack_penalty': -0.1,
          })
 
-    """
-    if the damage in lower then 0, the enemy's hp increases when attack
-    """
+    # if the damage in lower then 0, the target's hp increases when attack
     medic = cfg.register_agent_type(
         "medic",
         {'width': 1, 'length': 1, 'hp': 10, 'speed': 2,
@@ -56,14 +54,14 @@ def get_config(map_size):
     cfg.add_reward_rule(gw.Event(a, 'attack', b), receiver=a, value=2)
     cfg.add_reward_rule(gw.Event(a, 'attack', c), receiver=a, value=3)
 
-    cfg.add_reward_rule(gw.Event(a, 'kill', b), receiver=a, value=10)
-    cfg.add_reward_rule(gw.Event(a, 'kill', c), receiver=a, value=20)
+    cfg.add_reward_rule(gw.Event(a, 'kill', b), receiver=a, value=100)
+    cfg.add_reward_rule(gw.Event(a, 'kill', c), receiver=a, value=200)
 
     # b rule
     cfg.add_reward_rule(gw.Event(b, 'attack', a), receiver=b, value=2)
-    cfg.add_reward_rule(gw.Event(b, 'kill', a), receiver=b, value=10)
+    cfg.add_reward_rule(gw.Event(b, 'kill', a), receiver=b, value=100)
 
     # c rule
-    cfg.add_reward_rule(gw.Event(c, 'attack', b), receiver=c, value=3)
+    # cfg.add_reward_rule(gw.Event(c, 'attack', b), receiver=c, value=3)
 
     return cfg
